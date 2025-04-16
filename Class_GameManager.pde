@@ -50,13 +50,31 @@ class GameManager {
   }
   
   void drawUI() {
-    background(spectrum[colorIndex]);
+    background(255);
     if (gameState.equals("start")) {
-      fill(0);
+      int titleX = width/2;
+      int titleY = 75;
+      int titleW = 240;
+      int titleH = 60;
       textAlign(CENTER);
-      textSize(32);
-      text("Dino Dash", width/2, 100);
+      rectMode(CENTER);
       
+      
+      // Draw background "3D" box
+      fill(50);  // shadow color
+      rect(titleX + 5, titleY + 25, titleW, titleH, 20);  // offset shadow box
+      fill(255);  // main box
+      rect(titleX, titleY + 20, titleW, titleH, 20);  // rounded corners look modern
+      
+      // Draw 3D text shadow
+      fill(100);
+      textSize(48);
+      text("DINO DASH", titleX + 4, titleY + 40);
+      
+      //text("DINO DASH", titleX, titleY + 36);
+      
+      
+      rectMode(CORNER);
       fill(100, 200, 100);
       rect(mediumButton.x, mediumButton.y, mediumButton.w, mediumButton.h, 5);
       
@@ -86,8 +104,58 @@ class GameManager {
         lastSwitchTime = millis();
       }
       
-      tint(spectrum[colorIndex]);
-      image(dinoIdle, width/4 - 200, 200);
+      //NEW CODE FOR SMOOTH SHIFT OF COLORS
+      float t = (millis() - transitionStartTime) / float(transitionDuration);
+      t = constrain(t, 0, 1); // make sure it's in [0, 1] range
+      color currentTint = lerpColor(fromColor, toColor, t);
+      
+      //Text color changing
+      fill(currentTint, 100);  // soft glow with transparency
+      textSize(48);
+      for (int dx = -2; dx <= 2; dx++) {
+        for (int dy = -2; dy <= 2; dy++) {
+          // Skip the center so we don't double-draw the main text here
+          if (dx != 0 || dy != 0) {
+            text("DINO DASH", titleX + dx, titleY + 24 + dy);
+          }
+        }
+      }  
+      fill(0); // semi-transparent pulsing title
+      textSize(48);
+      text("DINO DASH", titleX, titleY+ 24);
+      
+      tint(currentTint, 255);
+      for (int dx = -3; dx <= 3; dx++) {
+        for (int dy = -3; dy <= 3; dy++) {
+          // Skip the center so we don't double-draw the main text here
+          if (dx != 0 || dy != 0) {
+            image(dinoIdle, width/4 - 175 + dx, 175 + dy);
+          }
+        }
+      } 
+      noTint();
+      image(dinoIdle, width/4 - 175, 175);
+      
+      // transition complete, move to next color
+      if (t >= 1) {
+        colorIndex = (colorIndex + 1) % spectrum.length;
+        fromColor = toColor;
+        toColor = spectrum[(colorIndex + 1) % spectrum.length];
+        transitionStartTime = millis();
+      }
+      
+      tint(currentTint, 255);
+      for (int dx = -3; dx <= 3; dx++) {
+        for (int dy = -3; dy <= 3; dy++) {
+          // Skip the center so we don't double-draw the main text here
+          if (dx != 0 || dy != 0) {
+            image(pterodactyl, 3*width/4 + dx, 50 + dy);
+          }
+        }
+      } 
+      noTint();
+      image(pterodactyl, 3*width/4, 50);
+      
       
     } else if (gameState.equals("instructions")) {
       // Instructions screen

@@ -5,6 +5,9 @@ color[] spectrum;
 int colorIndex = 0;
 int interval = 1000; // 1 second
 int lastSwitchTime = 0;
+int transitionStartTime;
+color fromColor, toColor;
+int transitionDuration = 1000; // 1 second
 
 // images we will use
 PImage dinoIdle;        
@@ -55,6 +58,7 @@ void setup() {
   //dinoRun2.resize(240,195);
   grass1.resize(40,20);
   grass2.resize(40,20);
+  pterodactyl.resize(200,200);
   
   // sounds we will use
   jumpSound = new SoundFile(this, "jumpSound.mp3");             
@@ -64,7 +68,7 @@ void setup() {
   highScoreSound = new SoundFile(this, "highScoreSound.mp3");
   titleMusic = new SoundFile(this, "title.mp3");
   
-  //colors
+  //COLOR SETUP LOGIC ALL BELOW
   spectrum = new color[] {
     color(255, 0, 0),    // Red
     color(255, 165, 0),  // Orange
@@ -74,6 +78,15 @@ void setup() {
     color(75, 0, 130),   // Indigo
     color(143, 0, 255)   // Violet
   };
+  
+  // Change from all black to a grey so I can use tint to change color
+  greyscalePhoto(dinoIdle, 180);
+  greyscalePhoto(pterodactyl, 180);
+  
+  
+  fromColor = spectrum[0];
+  toColor = spectrum[1];
+  transitionStartTime = millis();
 }
 
 void draw() {
@@ -121,4 +134,16 @@ void keyReleased() {
   if (keyCode == DOWN) {
     game.player.duck(false);
   }
+}
+
+void greyscalePhoto(PImage photo, int val){
+  photo.loadPixels();
+  for (int i = 0; i < photo.pixels.length; i++) {
+    color c = photo.pixels[i];
+    float alpha = alpha(c);
+    if (alpha > 0 && brightness(c) < 20) {
+      photo.pixels[i] = color(val, alpha);  // keep original transparency and match other grey photos
+    }
+  }
+  photo.updatePixels();
 }
