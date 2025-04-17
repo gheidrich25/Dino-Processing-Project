@@ -28,9 +28,9 @@ class Obstacle {
   }
   
   boolean checkCollision(Player player) {
-    return (x < player.x + player.width && 
+    return (x < player.x + player.playerWidth && 
             x + width > player.x && 
-            y < player.y + player.height && 
+            y < player.y + player.playerWidth && 
             y + height > player.y);
   }
   
