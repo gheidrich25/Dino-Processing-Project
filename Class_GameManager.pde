@@ -9,6 +9,9 @@ float scrollSpeed = 4;
 int obstacleSpawnCooldown = 5000;  // in milliseconds
 int lastSpawnTime = 0;
 
+//player vars
+
+
 
 class GameManager {
   String gameState = "start";
@@ -24,7 +27,7 @@ class GameManager {
   Button returnButton;
   
   GameManager() {
-    player = new Player(200, 280);
+    player = new Player(200, height);
     obstacles = new ArrayList<Obstacle>();
     lastSpawnTime = millis();
     score = 0;
