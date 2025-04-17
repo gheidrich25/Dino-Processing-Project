@@ -27,6 +27,9 @@ class GameManager {
   int cooldown; // next spawn time
   int lastSpawnTime = 0; // timestamp of last spawn
   
+  // sound
+  boolean soundPlayed = false;
+  
   GameManager() {
     player = new Player(200, height);
     obstacles = new ArrayList<Obstacle>();
@@ -270,8 +273,11 @@ class GameManager {
       textSize(16);
       text("Score: " + score, width/2, height/2);
       text("Click to Restart", width/2, height/2 + 30);
-      
-      gameOverSound.play();
+      // play game over sound
+      if(!soundPlayed){
+        gameOverSound.play();
+        soundPlayed = true; // plays only once
+      }
     }
   }
   
@@ -305,6 +311,7 @@ class GameManager {
     startTime = millis();
     lastUpdateTime = millis(); 
     lastSpawnTime = millis();
+    soundPlayed = false;
     cooldown = 3000;
     changeState("play");
   }

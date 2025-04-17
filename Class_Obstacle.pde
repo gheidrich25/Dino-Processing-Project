@@ -9,7 +9,7 @@ class Obstacle {
     this.y = y;  // ground line       
     this.width  = w;
     this.height = h;
-    this.speed = 4 + score * 0.01;
+    this.speed = 4 + score * 0.02;
     this.score = score;
 
     float rand = random(100);
@@ -93,7 +93,7 @@ class Obstacle {
   
     float pad = 40; // offset box around cactus/pit
     return !( px2 - (pad + 10) < ox1   //  player right < obstacle left
-           || px1 + (pad - 15) > ox2   // player left  > obstacle right
+           || px1 + (pad - 7) > ox2   // player left  > obstacle right
            || py2 + ((pad/2) - 5) < oy1   // player bottom < obstacle top
            || py1 - ((pad/2) + 5) > oy2   // player top > obstacle bottom
            );
