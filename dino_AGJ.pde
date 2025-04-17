@@ -14,7 +14,8 @@ PImage dinoIdle;
 PImage dinoRun1;        
 PImage dinoRun2;        
 PImage dinoJump;        
-PImage dinoDuck;        
+PImage dinoDuck1; 
+PImage dinoDuck2;   
 PImage cactus;          
 PImage pit;             
 PImage pterodactyl;     
@@ -46,15 +47,17 @@ void setup() {
   dinoRun1 = loadImage("dino_left_up_resize.png");        
   dinoRun2 = loadImage("dino_right_up_resize.png");         
   dinoJump = loadImage("dino.png");        
-  dinoDuck = loadImage("dinoDuck.png");        
+  dinoDuck1 = loadImage("dinoDuck1.png"); 
+  dinoDuck2 = loadImage("dinoDuck2.png");
   cactus = loadImage("cactus.png");                      
   pterodactyl = loadImage("pterodactyl.png");     
   background = loadImage("grass1.png");
        
   //Resize statements
-  //dinoIdle.resize(200,200);
-  //dinoRun1.resize(250,185);
-  //dinoRun2.resize(240,195);
+  //dinoRUN 1,2 (80,85)
+  //dinoDUCK 1 (110,52) 33 lower than run
+  //dinoDUCK 2 (112, 52) 33 lower than run
+  dinoIdle.resize(200,200);
   grass1.resize(40,40);
   grass2.resize(40,40);
   pterodactyl.resize(200,200);
