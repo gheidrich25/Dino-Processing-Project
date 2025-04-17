@@ -5,9 +5,6 @@ PImage[] groundTiles;
 float[] tileX;
 int tileCount = 22;
 float scrollSpeed = 4;
-// Obstacle vars
-int obstacleSpawnCooldown = 5000;  // in milliseconds
-int lastSpawnTime = 0;
 
 //player vars
 
@@ -25,11 +22,16 @@ class GameManager {
   Button hardButton;
   Button instructionsButton;
   Button returnButton;
+
+  //time
+  int startTime;
+  int lastUpdateTime = 0; // for when score increments
+  int cooldown; // next spawn time
+  int lastSpawnTime = 0; // timestamp of last spawn
   
   GameManager() {
     player = new Player(200, height);
     obstacles = new ArrayList<Obstacle>();
-    lastSpawnTime = millis();
     score = 0;
     
     // Initialize buttons
@@ -46,6 +48,8 @@ class GameManager {
       groundTiles[i] = (i % 2 == 0) ? grass1 : grass2;  // assume these are loaded already
       tileX[i] = i * grass1.width;
     }
+
+    cooldown = 3000; // init cooldown time btwn obstacles
 
   }
   
@@ -65,18 +69,41 @@ class GameManager {
          highScoreSound.play();
       }
       
-      if (millis() - lastSpawnTime > obstacleSpawnCooldown) {
-        //obstacles.add(new Obstacle(width, height - 60));
-        lastSpawnTime = millis();
-        obstacleSpawnCooldown = int(random(1200, 2400)); 
-      }
+      // start displaying obstacles after 5 seconds
+      if (millis() - startTime > 5000
+        && millis() - lastSpawnTime > cooldown) {
+          // randomly generate obstacle and add to obstacle array
+          obstacles.add(
+            new Obstacle(
+              width, 
+              height - 60,    
+              60,             
+              40,
+              score
+            )
+          );
+          
+          // save last spawn time for new obj
+          lastSpawnTime = millis();
       
-    }
-    if (gameState.equals("start")){
-       if(!titleMusic.isPlaying()){
-         titleMusic.play();
-       }    
-    }
+          // speed up spawns as score goes up/ randomly gen cooldown time
+          int minCd = max(600, 2000 - score * 5); // min cooldown (goes down as score increases, but never below 500)
+          int maxCd = max(900, 3000 - score * 10); // max cooldown (goes down as score increases, but never below 800)
+          cooldown = int(random(minCd, maxCd)); // randomly selects btwn min and max cooldown so it is unpredictable
+        }
+        // check for if obstacles are off screen or collided w player
+        for(int i = obstacles.size() - 1; i >= 0; i--){
+          Obstacle o = obstacles.get(i); // grab obstacles from array
+          o.update(); // move w grass
+          if(o.isOffScreen()){
+            obstacles.remove(i); // remove if the obstacle is not on screen
+          }
+          else if(o.checkCollision(player)){
+            changeState("gameover");
+            return; // stop updating game
+          }
+        }
+      }
   }
   
   void drawUI() {
@@ -209,6 +236,11 @@ class GameManager {
       
     } else if (gameState.equals("play")) {
       noTint();
+      // draw obstacles in obstacle array
+      for(Obstacle o : obstacles){
+        o.draw();
+      }
+      // draw player on top
       player.draw();
       fill(0);
       textAlign(LEFT);
@@ -272,6 +304,10 @@ class GameManager {
     player = new Player(200, 280);
     obstacles = new ArrayList<Obstacle>();
     score = 0;
+    startTime = millis();
+    lastUpdateTime = millis(); 
+    lastSpawnTime = millis();
+    cooldown = 3000;
     changeState("play");
   }
   
