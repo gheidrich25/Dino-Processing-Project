@@ -3,13 +3,36 @@ class Obstacle {
   float speed;
   String type;
   
-  Obstacle(String type, float x, float y, float w, float h) {
-    this.type = type;
+  // cactus, cactusLarge? pit, highPterodactyl, lowPterodactyl
+  
+  Obstacle(float x, float y, float w, float h) {
     this.x = x;
     this.y = y;
     this.width = w;
     this.height = h;
-    this.speed = 5;
+    this.speed = 4;
+    
+    
+    float rand = random(100);
+    // 40% cactus, 10% cactusLarge? 20% pit, 15% highPterodactyl, 15% lowPterodactyl
+    if (rand < 40) {
+      // 40% chance
+      type = "cactus";
+    } else if (rand < 50) {
+      // 10% chance
+      type = "cactusLarge";
+    } else if (rand < 70) {
+      // 20% chance
+      type = "pit";
+    } else if (rand < 85){ //30% pterodatyl
+      // 15% chance
+      type = "pteroLow";
+      // ADJUST Y VALUE
+    } else {
+      // 15% chance
+      type = "pteroHigh";
+      // ADJUST Y VALUE
+    } 
   }
   
   void update() {
@@ -28,9 +51,9 @@ class Obstacle {
   }
   
   boolean checkCollision(Player player) {
-    return (x < player.x + player.width && 
+    return (x < player.x + player.playerWidth && 
             x + width > player.x && 
-            y < player.y + player.height && 
+            y < player.y + player.playerWidth && 
             y + height > player.y);
   }
   

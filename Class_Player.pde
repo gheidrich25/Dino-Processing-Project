@@ -2,7 +2,7 @@ float screenHeight = 400;
 
 class Player {
   float x, y;
-  float width, height;
+  float playerWidth, playerHeight;
   float yVelocity;
   float gravity;
   float jumpHeight;
@@ -12,15 +12,16 @@ class Player {
   Player(float x, float y) {
     this.x = x;
     this.y = y;
-    this.width = 60;
-    this.height = 80;
+    this.playerWidth = 60;
+    this.playerHeight = 80;
     this.yVelocity = 0;
     this.gravity = 0.8;
     this.jumpHeight = 15;
     this.isJumping = false;
     this.isDucking = false;
     
-    print(screenHeight + "|" + this.height + "|" + (screenHeight - 40 - this.height) + "|");
+    print(screenHeight + "|" + this.playerWidth + "|" + (screenHeight - 40 - this.playerHeight) + "|");
+    
     
   }
   
@@ -29,8 +30,8 @@ class Player {
       yVelocity += gravity;
       y += yVelocity;
       
-      if (y >= screenHeight - 40 - this.height) {
-        y = screenHeight - 40 - this.height;
+      if (y >= screenHeight - 40 - this.playerHeight) {
+        y = screenHeight - 40 - this.playerHeight;
         print("JUMP");
         isJumping = false;
         yVelocity = 0;
@@ -38,26 +39,39 @@ class Player {
     }
     
     if (isDucking) {
-      height = 40;
+      playerHeight = 40;
     } else {
-      height = 80;
+      playerHeight = 80;
     }
   }
   
   void draw() {
     imageMode(CORNER);
     if (isDucking) {
-      image(dinoDuck, x, y, width, height);
+      image(dinoDuck, x, y, playerWidth, playerHeight);
     } else if (isJumping) {
-      image(dinoJump, x, y, width, height);
+      image(dinoJump, x, y, playerWidth, playerHeight);
     } else {
       // Alternate running images based on frame count
       if (frameCount % 20 < 10) {
-        image(dinoRun1, x, y, width, height);
+        imageMode(CENTER);
+        image(dinoRun1, x + dinoRun1.width/4, y, dinoRun1.width, dinoRun1.height);
+        fill(0,255,0);
+        rectMode(CENTER);
+        //rect(x + dinoRun1.width/4, y, dinoRun1.width, dinoRun1.height);
       } else {
-        image(dinoRun2, x, y, width, height);
+        imageMode(CENTER);
+        image(dinoRun2, x + dinoRun2.width/4, y, dinoRun2.width, dinoRun2.height);
+        fill(255,0,0);
+        rectMode(CENTER);
+        //rect(x + dinoRun2.width/4, y, dinoRun2.width, dinoRun2.height);
       }
     }
+    
+    //println("Idle size: " + dinoIdle.width + "x" + dinoIdle.height);
+    //println("Run1 size: " + dinoRun1.width + "x" + dinoRun1.height);
+    //println("Run2 size: " + dinoRun2.width + "x" + dinoRun2.height);
+    //println("Jump size: " + dinoJump.width + "x" + dinoJump.height);
   }
   
   void jump() {

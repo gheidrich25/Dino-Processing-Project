@@ -38,7 +38,6 @@ Integer imageDisplay = 0;
 
 void setup() {
   size(800, 400);
-  game = new GameManager();
   
   //Load statements for photos
   grass1 = loadImage("grass1.png");
@@ -53,12 +52,21 @@ void setup() {
   background = loadImage("grass1.png");
        
   //Resize statements
-  dinoIdle.resize(200,200);
+  //dinoIdle.resize(200,200);
   //dinoRun1.resize(250,185);
   //dinoRun2.resize(240,195);
   grass1.resize(40,20);
   grass2.resize(40,20);
   pterodactyl.resize(200,200);
+  
+  
+  int dinoW = 200;
+  int dinoH = 200;
+  
+  dinoIdle.resize(dinoW, dinoH);
+  dinoJump.resize(dinoW, dinoH);
+  dinoRun1.resize(dinoW, dinoH);
+  dinoRun2.resize(dinoW, dinoH);
   
   // sounds we will use
   jumpSound = new SoundFile(this, "jumpSound.mp3");             
@@ -87,6 +95,8 @@ void setup() {
   fromColor = spectrum[0];
   toColor = spectrum[1];
   transitionStartTime = millis();
+  
+  game = new GameManager();
 }
 
 void draw() {
