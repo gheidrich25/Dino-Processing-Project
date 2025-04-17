@@ -43,8 +43,8 @@ void setup() {
   grass1 = loadImage("grass1.png");
   grass2 = loadImage("grass2.png");
   dinoIdle = loadImage("dino.png");
-  dinoRun1 = loadImage("dino_left_up.png");        
-  dinoRun2 = loadImage("dino_right_up.png");         
+  dinoRun1 = loadImage("dino_left_up_resize.png");        
+  dinoRun2 = loadImage("dino_right_up_resize.png");         
   dinoJump = loadImage("dino.png");        
   dinoDuck = loadImage("dinoDuck.png");        
   cactus = loadImage("cactus.png");                      
@@ -55,8 +55,8 @@ void setup() {
   //dinoIdle.resize(200,200);
   //dinoRun1.resize(250,185);
   //dinoRun2.resize(240,195);
-  grass1.resize(40,20);
-  grass2.resize(40,20);
+  grass1.resize(40,40);
+  grass2.resize(40,40);
   pterodactyl.resize(200,200);
   
   
@@ -65,8 +65,8 @@ void setup() {
   
   dinoIdle.resize(dinoW, dinoH);
   dinoJump.resize(dinoW, dinoH);
-  dinoRun1.resize(dinoW, dinoH);
-  dinoRun2.resize(dinoW, dinoH);
+  //dinoRun1.resize(dinoW, dinoH);
+  //dinoRun2.resize(dinoW, dinoH);
   
   // sounds we will use
   jumpSound = new SoundFile(this, "jumpSound.mp3");             

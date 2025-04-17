@@ -32,6 +32,7 @@ class Player {
       
       if (y >= screenHeight - 40 - this.playerHeight) {
         y = screenHeight - 40 - this.playerHeight;
+        // height - gras size - img size
         print("JUMP");
         isJumping = false;
         yVelocity = 0;
@@ -41,7 +42,7 @@ class Player {
     if (isDucking) {
       playerHeight = 40;
     } else {
-      playerHeight = 80;
+      playerHeight = 85;
     }
   }
   
@@ -54,17 +55,17 @@ class Player {
     } else {
       // Alternate running images based on frame count
       if (frameCount % 20 < 10) {
-        imageMode(CENTER);
-        image(dinoRun1, x + dinoRun1.width/4, y, dinoRun1.width, dinoRun1.height);
+        imageMode(CORNER);
+        image(dinoRun1, x - dinoRun1.width/6, y, dinoRun1.width, dinoRun1.height);
         fill(0,255,0);
-        rectMode(CENTER);
-        //rect(x + dinoRun1.width/4, y, dinoRun1.width, dinoRun1.height);
+        rectMode(CORNER);
+        rect(x - dinoRun1.width/6, y, dinoRun1.width, dinoRun1.height);
       } else {
-        imageMode(CENTER);
-        image(dinoRun2, x + dinoRun2.width/4, y, dinoRun2.width, dinoRun2.height);
+        imageMode(CORNER);
+        image(dinoRun2, x - dinoRun2.width/6, y, dinoRun2.width, dinoRun2.height);
         fill(255,0,0);
-        rectMode(CENTER);
-        //rect(x + dinoRun2.width/4, y, dinoRun2.width, dinoRun2.height);
+        rectMode(CORNER);
+        rect(x - dinoRun2.width/6, y, dinoRun2.width, dinoRun2.height);
       }
     }
     
