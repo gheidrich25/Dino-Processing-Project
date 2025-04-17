@@ -38,7 +38,6 @@ Integer imageDisplay = 0;
 
 void setup() {
   size(800, 400);
-  game = new GameManager();
   
   //Load statements for photos
   grass1 = loadImage("grass1.png");
@@ -96,6 +95,8 @@ void setup() {
   fromColor = spectrum[0];
   toColor = spectrum[1];
   transitionStartTime = millis();
+  
+  game = new GameManager();
 }
 
 void draw() {

@@ -1,4 +1,14 @@
+//VAR for score tracking
 int lastUpdateTime = 0;
+// ground tiles variables
+PImage[] groundTiles;
+float[] tileX;
+int tileCount = 22;
+float scrollSpeed = 4;
+// Obstacle vars
+int obstacleSpawnCooldown = 5000;  // in milliseconds
+int lastSpawnTime = 0;
+
 
 class GameManager {
   String gameState = "start";
@@ -16,6 +26,7 @@ class GameManager {
   GameManager() {
     player = new Player(200, 280);
     obstacles = new ArrayList<Obstacle>();
+    lastSpawnTime = millis();
     score = 0;
     
     // Initialize buttons
@@ -23,6 +34,16 @@ class GameManager {
     hardButton = new Button(width/2 + 20, 140, 80, 30, "Hard");
     instructionsButton = new Button(width/2 - 60, 190, 120, 30, "Instructions");
     returnButton = new Button(width/2 - 60, height - 80, 120, 30, "Return to Menu");
+    
+    //Initialization work for moving ground tiles
+    groundTiles = new PImage[tileCount];
+    tileX = new float[tileCount];
+    
+    for (int i = 0; i < tileCount; i++) {
+      groundTiles[i] = (i % 2 == 0) ? grass1 : grass2;  // assume these are loaded already
+      tileX[i] = i * grass1.width;
+    }
+
   }
   
   void update() {
@@ -39,6 +60,12 @@ class GameManager {
       }
       if ((score % 100 == 0) && (!highScoreSound.isPlaying())){
          highScoreSound.play();
+      }
+      
+      if (millis() - lastSpawnTime > obstacleSpawnCooldown) {
+        //obstacles.add(new Obstacle(width, height - 60));
+        lastSpawnTime = millis();
+        obstacleSpawnCooldown = int(random(1200, 2400)); 
       }
       
     }
@@ -72,7 +99,6 @@ class GameManager {
       text("DINO DASH", titleX + 4, titleY + 40);
       
       //text("DINO DASH", titleX, titleY + 36);
-      
       
       rectMode(CORNER);
       fill(100, 200, 100);
@@ -188,6 +214,19 @@ class GameManager {
       
       if(!bgMusic.isPlaying()){
         bgMusic.play();
+      }
+      
+      // GROUND TILE WORK
+      imageMode(CORNER);
+      for (int i = 0; i < tileCount; i++) {
+        tileX[i] -= scrollSpeed;
+      
+        // Wrap tile to the right side if it goes off screen
+        if (tileX[i] < -groundTiles[i].width) {
+          tileX[i] = width;
+        }
+      
+        image(groundTiles[i], tileX[i], height - groundTiles[i].height);
       }
       
     } else if (gameState.equals("gameover")) {
