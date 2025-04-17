@@ -8,8 +8,6 @@ float scrollSpeed = 4;
 
 //player vars
 
-
-
 class GameManager {
   String gameState = "start";
   Player player;
@@ -64,13 +62,13 @@ class GameManager {
       if (millis() - lastUpdateTime > 125) {
         score += 1;  // value per eigth second, dino game tested to be near 7 per second
         lastUpdateTime = millis();
-      }
-      if ((score % 100 == 0) && (!highScoreSound.isPlaying())){
-         highScoreSound.play();
+         if ((score % 100 == 0) && (!highScoreSound.isPlaying())){
+           highScoreSound.play();
+        }
       }
       
-      // start displaying obstacles after 5 seconds
-      if (millis() - startTime > 5000
+      // start displaying obstacles after 3 seconds
+      if (millis() - startTime > 3000
         && millis() - lastSpawnTime > cooldown) {
           // randomly generate obstacle and add to obstacle array
           obstacles.add(
@@ -87,8 +85,8 @@ class GameManager {
           lastSpawnTime = millis();
       
           // speed up spawns as score goes up/ randomly gen cooldown time
-          int minCd = max(600, 2000 - score * 5); // min cooldown (goes down as score increases, but never below 500)
-          int maxCd = max(900, 3000 - score * 10); // max cooldown (goes down as score increases, but never below 800)
+          int minCd = max(800, 2000 - score * 5); // min cooldown (goes down as score increases, but never below 500)
+          int maxCd = max(1200, 3000 - score * 10); // max cooldown (goes down as score increases, but never below 800)
           cooldown = int(random(minCd, maxCd)); // randomly selects btwn min and max cooldown so it is unpredictable
         }
         // check for if obstacles are off screen or collided w player
@@ -244,8 +242,8 @@ class GameManager {
       player.draw();
       fill(0);
       textAlign(LEFT);
-      textSize(16);
-      text("Score: " + score, 10, 20);
+      textSize(48);
+      text("Score: " + score, 25, 50);
       
       if(!bgMusic.isPlaying()){
         bgMusic.play();
